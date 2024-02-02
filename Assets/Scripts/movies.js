@@ -13,7 +13,6 @@ function getMovieInfo(searchTerm){
                 return response.json();
             })
             .then(function (data) {
-                console.log(data);
                 var $movieCard = $("<div>", {class: 'movie-card'})
                 //data.Title
                 $movieCard.append(`<h3 class = 'title'>${data.Title}</h3>`)
