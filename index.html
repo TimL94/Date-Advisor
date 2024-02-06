@@ -4,11 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Date Advisor</title>
+    <link rel="stylesheet" href="./Assets/Styles/style.css">
 </head>
 <body>
     <header><h1>Date Advisor</h1></header>
     <main>
-        <div id="movie-list"></div>
+        <div class="tabs">
+            <input class="input" name="tabs" type="radio" id="tab-1" checked="checked"/>
+            <label class="label" for="tab-1">Movies</label>
+            <div class="panel">
+                <!-- Search content here--> 
+                <form id="search-movie" action="">
+                    <label for="search-movie-input">Search for movies:</label>
+                    <input type="text" name="search-movie-input" id="search-movie-input" placeholder="Movie name" autocomplete="on">
+                    <button id="search-movie-button" type="submit">Search</button>
+                </form>
+                <ul id="movie-list" class="card-list"></ul>
+            </div>
+            <input class="input" name="tabs" type="radio" id="tab-2"/>
+            <label class="label" for="tab-2">Recipes</label>
+            <div class="panel">
+                <!-- Search content here--> 
+                <form action="">
+                    <label for="searchTerm">Search for movies:</label>
+                    <input type="text" name="search-recipe" id="search-recipe" placeholder="Recipes" autocomplete="on" required>
+                    <button id="" type="submit">Search</button>
+                </form>
+            </div>
+            <input class="input" name="tabs" type="radio" id="tab-3"/>
+            <label class="label" for="tab-3">Favorites</label>
+            <div class="panel">
+                <!-- Search content here--> 
+                <ul id="card-list" class="card-list"></ul>
+            </div>
+        </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="./Assets/Scripts/movies.js"></script>
