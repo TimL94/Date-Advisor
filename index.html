@@ -4,42 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Date Advisor</title>
-    <link rel="stylesheet" href="./Assets/Styles/style.css">
+    <link rel="stylesheet" href="./src/output.css">
+    <link rel="stylesheet" href="./Assets/Styles/style-old.css">
 </head>
-<body>
-    <header><h1>Date Advisor</h1></header>
-    <main>
-        <div class="tabs">
-            <input class="input" name="tabs" type="radio" id="tab-1" checked="checked"/>
-            <label class="label" for="tab-1">Movies</label>
-            <div class="panel">
-                <!-- Search content here--> 
-                <form id="search-movie" action="">
+
+<body class= "font-mono bg-indigo-600" >
+    <header 
+    class="text-8xl text-white italic text-center bg-no-repeat bg-cover bg-bottom w-full h-full p-16" 
+    style= "background-image: url(/Date-Advisor/Assets/images/Artwork.jpg);"> DATE ADVISOR
+    </header>
+    
+    <main class= "w-full h-full text-white inline-flex justify-between"> 
+        <section id="search-container" class="tabs text-3xl bg-red-500 m-7 p-4 rounded-lg border-4 border-black shadow-2xl">
+            <!-- tab radio hack -->
+            <input class="input" name="search-tabs" type="radio" id="search-tab-1" checked="checked"/>
+            <!-- Tab label for Movie Search tab-->
+            <label class="label" for="search-tab-1">Movies</label>
+            <!-- Movie search panel body -->
+            <div class="panel secondary-color">
+                <!-- Movie search form -->
+                <form id="search-movie" class="main-color">
                     <label for="search-movie-input">Search for movies:</label>
-                    <input type="text" name="search-movie-input" id="search-movie-input" placeholder="Movie name" autocomplete="on">
+                    <input type="text" name="search-movie-input" id="search-movie-input" placeholder="Movie name" autocomplete="on" required>
                     <button id="search-movie-button" type="submit">Search</button>
                 </form>
-                <ul id="movie-list" class="card-list"></ul>
+                <!-- list for displaying search results -->
+                <ul id="movie-results" class="card-list sortable"></ul>
             </div>
-            <input class="input" name="tabs" type="radio" id="tab-2"/>
-            <label class="label" for="tab-2">Recipes</label>
-            <div class="panel">
-                <!-- Search content here--> 
-                <form action="">
-                    <label for="searchTerm">Search for movies:</label>
-                    <input type="text" name="search-recipe" id="search-recipe" placeholder="Recipes" autocomplete="on" required>
-                    <button id="" type="submit">Search</button>
+            <!-- tab radio hack -->
+            <input class="input" name="search-tabs" type="radio" id="search-tab-2"/>
+            <!-- Tab label for Recipe Search tab-->
+            <label class="label" for="search-tab-2">Recipes</label>
+            <!-- Recipe search panel body -->
+            <div class="panel secondary-color">
+                <!-- Recipe search form --> 
+                <form id="search-recipe" class="main-color">
+                    <label for="search-recipe-input">Search for recipes:</label>
+                    <input type="text" name="search-recipe-input" id="search-recipe-input" placeholder="Recipes" autocomplete="on" required>
+                    <button id="search-recipe-button" type="submit">Search</button>
                 </form>
             </div>
-            <input class="input" name="tabs" type="radio" id="tab-3"/>
-            <label class="label" for="tab-3">Favorites</label>
-            <div class="panel">
-                <!-- Search content here--> 
-                <ul id="card-list" class="card-list"></ul>
+        </section>
+        <!--This container should two tabs with dinner, and a movies tab. Both tabs should have a search bar that uses the corresponding API to fetch information. The information should then be used to fill several empty divs/li's.
+        -->
+
+        <section id="selection-container" class="tabs droppable text-3xl bg-red-500 m-7 p-4 rounded-lg border-4 border-black shadow-2xl">
+            <!-- tab radio hack -->
+            <input class="input" name="selection-tabs" type="radio" id="selection-tab-1" checked="checked"/>
+            <!-- Tab label for Selection panel-->
+            <label class="label" for="selection-tab-1">Selection</label>
+            <!-- Selection list panel body -->
+            <div class="panel secondary-color">
+                <!-- Selection header -->
+                <h2>Selected items</h2>
+                <!-- list for displaying selections -->
+                <ul id="selection-list" class="card-list"><li>stuff and things</li>
+                <li>stuff and things</li>
+                <li>stuff and things</li>
+                <li>stuff and things</li>
+                <li>stuff and things</li></ul>
             </div>
-        </div>
+            <!-- tab radio hack -->
+            <input class="input" name="selection-tabs" type="radio" id="selection-tab-2"/>
+            <!-- Tab label for Favorites panel -->
+            <label class="label" for="selection-tab-2">Favorites</label>
+            <!-- Favorite selections panel body -->
+            <div class="panel secondary-color">
+                <!-- Favorite header -->
+                <h2>Favorite</h2>
+                <!-- list for displaying favorite -->
+                <ul id="favorite-list" class="card-list"></ul>
+            </div>
+        </section>
     </main>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="./Assets/Scripts/movies.js"></script>
 </body>
 </html>

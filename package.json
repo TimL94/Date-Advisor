@@ -1,0 +1,14 @@
+{
+  "name": "date-advisor",
+  "version": "1.0.0",
+  "description": "a simple app for creating a date night",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
