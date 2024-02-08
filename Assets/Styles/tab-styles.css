@@ -1,0 +1,56 @@
+@media (min-width: 600px) {
+    body {
+        padding: 60px 10px;
+}
+}
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+}
+.input {
+    position: absolute;
+    opacity: 0;
+}
+.label {
+    width: 100%;
+    padding: 20px 30px;
+    background: #ffffff00;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    transition: background 0.1s, color 0.1s;
+}
+.label:hover {
+    background: #ffffff44;
+}
+.label:active {
+    background: #00000044;
+}
+.input:focus + .label {
+    z-index: 1;
+}
+.input:checked + .label {
+    background: #ffffff22;
+}
+@media (min-width: 600px) {
+    .label {
+        width: auto;
+    }
+}
+.panel {
+    display: none;
+    width: 100%;
+    min-width: 500px;
+    min-height: 300px;
+    padding: 20px 30px 30px;
+    background: #ffffff22;
+}
+
+@media (min-width: 600px) {
+    .panel {
+        order: 99;
+    }
+}
+.input:checked + .label + .panel {
+    display: block;
+}
