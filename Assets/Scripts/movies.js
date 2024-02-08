@@ -6,14 +6,14 @@ function getMovieInfo(searchTerm){
         return response.json();
     })
     .then(function (data) {
-
+        console.log(data);
         for(movie of data.Search){
             fetch(`http://www.omdbapi.com/?apikey=${key}&i=${movie.imdbID}`)
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
-
+                
                 var $movieCard = $("<li>", {class: 'movie-card main-color ui-state-default'})
                 //data.Title
                 $movieCard.append(`<h3 class = 'info title'>${data.Title}</h3>`)
