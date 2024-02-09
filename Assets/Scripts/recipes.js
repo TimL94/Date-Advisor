@@ -23,11 +23,21 @@ $('#search-recipe-button').on('click', function(event){
             })
             .then(function(data){
                 console.log(data);
-                var $movieCard = $("<li>", {class: 'movie-card main-color ui-state-default'});
+                var $recipeCard = $("<li>", {class: 'recipe item-card main-color ui-state-default'});
 
-                $movieCard.append(`<h3 class = 'info title'>${data.title}</h3>`)
-                $movieCard.append(`<img class = 'image poster' src = '${data.image}'>`)
+                $recipeCard.append(`<h3 class = 'info title'>${data.title}</h3>`)
+                $recipeCard.append(`<img class = 'image poster' src = '${data.image}'>`)
 
+                $recipeCard.on( "click", function(event) {
+                    var $item = $( this ),
+                        $target = $( event.target );
+               
+                    if ($target.is( 'a.ui-icon-close')) {
+                      deleteItem($item);
+                    }
+               
+                    return false;
+                });
                 $('#recipe-results').append($movieCard);
             })
         }
