@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Date Advisor</title>
     <link rel="stylesheet" href="./src/output.css">
-    <link rel="stylesheet" href="./Assets/Styles/style-old.css">
+    <link rel="stylesheet" href="./Assets/Styles/tab-styles.css">
 </head>
 
 <body class= "font-mono bg-indigo-600" >
@@ -15,7 +15,7 @@
     </header>
 
     
-    <main class= "w-full h-full text-white inline-flex justify-between"> 
+    <main class= "w-full h-full inline-flex justify-between"> 
         <section id="search-container" class="tabs text-3xl bg-red-500 m-7 p-4 rounded-lg border-4 border-black shadow-2xl">
             <!-- tab radio hack -->
             <input class="input" name="search-tabs" type="radio" id="search-tab-1" checked="checked"/>
@@ -24,7 +24,7 @@
             <!-- Movie search panel body -->
             <div class="panel secondary-color">
                 <!-- Movie search form -->
-                <form id="search-movie" class="main-color">
+                <form id="search-movie" class="main-color text-black">
                     <label for="search-movie-input">Search for movies:</label>
                     <input type="text" name="search-movie-input" id="search-movie-input" placeholder="Movie name" autocomplete="on" required>
                     <button id="search-movie-button" type="submit">Search</button>

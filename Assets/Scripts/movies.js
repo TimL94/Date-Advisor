@@ -32,7 +32,7 @@ function getMovieInfo(searchTerm){
                     revert: "invalid", // when not dropped, the item will revert back to its initial position
                     containment: "document",
                     helper: "clone",
-                //     cursor: "move"
+                    cursor: "move"
                 })
 
                 $('#movie-results').append($movieCard);
@@ -55,7 +55,7 @@ $(function(){
 
     function moveItem( $item ) {
         $item.fadeOut(function() {
-        $item.appendTo($selections).fadeIn();
+        $item.appendTo($selectionList).fadeIn();
         });
       }
   });
