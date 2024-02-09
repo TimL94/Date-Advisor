@@ -7,6 +7,12 @@ $(function(){
         $recipeResultsList = $('ul.recipe.results-list'),
         $movieSelectionList = $('ul.movie.selection-list'),
         $recipeSelectionList = $('ul.recipe.selection-list');
+    
+    // Enable Tab functionality
+    $('.tabs').tabs();
+
+    //TODO: on initializing page, load saved favorite items and add them to favorited items list
+    //  ideas: We can save a list of just the id for the item and make an api call on page load to make sure item info is up to date
 
     // Sends a request to specified url and passes the data recieved through the callback function
     function fetchAPIData(url, callback){
@@ -52,6 +58,7 @@ $(function(){
         
     }
 
+    // Create a new card representing movie data and add it to the list of search results
     function addMovieCard(data){
         // Create card to hold the data
         newCard().addClass('movie')
@@ -70,6 +77,7 @@ $(function(){
         .appendTo($movieResultsList);
     }
 
+    // Create a new card representing recipe data and add it to the list of search results
     function addRecipeCard(data){
         // Create card to hold the data
         newCard()
@@ -79,6 +87,7 @@ $(function(){
         
     }
 
+    // Create and return new card all cards should be based on
     function newCard(){
         // Create a new base card
         var $newCard = $("<li>", {class: `item-card ui-state-default`});
@@ -93,7 +102,8 @@ $(function(){
             cursor: "move"
         })
         
-        // Handle icon behavior
+        // Add icon handling behavior
+        // Note: the icons aren't being added here, just information on what to do with icons added in the future
         $newCard.on( "click", function(event) {
             var $item = $(this),
                 $target = $(event.target);
@@ -111,7 +121,6 @@ $(function(){
     }
 
     // TODO: The next two sections might be able to be collapsed into a single jquery call. More research needed
-
     // Make the movieSelectionList area a droppable area
     $movieSelectionList.droppable({
         // Only accept item cards with movie class
@@ -148,7 +157,6 @@ $(function(){
     
 
     // TODO: Add duplicate detection. Currently, selecting the same card multiple times creates multiple instances of the same item
-
     // Make a copy of item card and add it to list of selected cards
     function selectItem( $item, $target) {
         // Make a deep copy of dropped item and it's listeners
@@ -164,7 +172,6 @@ $(function(){
             // fade clone in
             .fadeIn();
         })
-            
       }
 
     // Delete the item from it's selection list
@@ -176,8 +183,24 @@ $(function(){
         });
     }
 
+    // Function to add the information of an item to list of favorites and save a reference for it in local storage
     function favoriteItem( $item ) {
         //TODO: Handle adding an item to the list of favorites and storing it in local storage
+    }
+
+    // Function to generate a random set of activities and display them as a dialog modal
+    function generateDate(){
+
+        // TODO: generate and display a dialog object containing randomly selected items
+
+    }
+    // Selects a random item from a list and returns a reference
+    function selectItem($itemList){
+        var randomItem;
+
+        //TODO: pick a random item from the list
+
+        return randomItem;
     }
 
     // Attach a listener to the search forms
@@ -199,6 +222,12 @@ $(function(){
                 console.log("This shouldn't have happened");
         }
     })
+    
+    // Attach a listener to the generate date button
+    $('#generate-date').on('click', (event) => {
+        // Prevent default function (probably won't neccessary, but added just in case)
+        event.preventDefault();
 
-    $('.tabs').tabs();
+        generateDate();        
+    })
 });
