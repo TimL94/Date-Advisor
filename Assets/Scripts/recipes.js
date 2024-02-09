@@ -41,8 +41,5 @@ $('#search-recipe-button').on('click', function(event){
                 $('#recipe-results').append($movieCard);
             })
         }
-
-
-        
     })
 })
