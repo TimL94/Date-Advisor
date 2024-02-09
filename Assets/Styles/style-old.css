@@ -1,16 +1,16 @@
 :root {
-    --main-color: #415a77;
+    --main-color: #5885b9;
     --accent-color: #602b23;
     --secondary-color: #a93f55;
 }
 
 .main-color{
-    color: white;
+    color: rgb(26, 19, 19);
     background: var(--main-color);    
     border-color: var(--accent-color);
 }
 .secondary-color{
-    color: white;
+    color: rgb(12, 10, 10);
     background: var(--secondary-color);
     border-width: 3px;
     border-style: outset;
@@ -24,7 +24,6 @@ main {
 }
 header {
     text-align: center;
-    margin: 2rem;
 }
 @media (min-width: 600px) {
     body {
@@ -62,7 +61,10 @@ form {
     padding: 20px 30px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 24px;
+    border: 1px solid white;
+    border-radius: 20px;
+    margin: 5px;
     transition: background 0.1s, color 0.1s;
 }
 .label:hover {  
@@ -71,6 +73,8 @@ form {
 }
 .input:focus + .label {
     z-index: 1;
+    border: 5px solid white;
+    font-size:24px;
 }
 .input:checked + .label {
 }
