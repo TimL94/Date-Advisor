@@ -195,7 +195,7 @@ $(function(){
 
     }
     // Selects a random item from a list and returns a reference
-    function selectItem($itemList){
+    function pickRandomItem($itemList){
         var randomItem;
 
         //TODO: pick a random item from the list
