@@ -218,14 +218,20 @@ $(function(){
         //TODO: Handle adding an item to the list of favorites and storing it in local storage
     }
 
-    $('button#generate').on('click', function(event){
-        generateDate();
-    })
+
     // Function to generate a random set of activities and display them as a dialog modal
     function generateDate(){
         var $randomMovie = pickRandomItem($movieSelectionList),
             $randomRecipe = pickRandomItem($recipeSelectionList);
-        // TODO: generate and display a dialog object containing randomly selected items
+
+            dateArray = [];
+
+        dateArray.push($randomMovie);
+        dateArray.push($randomRecipe);
+
+        return dateArray;
+        
+        
         
 
     }
@@ -260,10 +266,32 @@ $(function(){
     })
     
     // Attach a listener to the generate date button
-    $('#generate-date').on('click', (event) => {
+    $('#generate').on('click', (event) => {
         // Prevent default function (probably won't neccessary, but added just in case)
         event.preventDefault();
+        $('#modal').empty();
 
-        generateDate();        
+        var newDate = generateDate();
+
+        var dateMovie = newDate[0].clone();
+        var dateRecipe = newDate[1].clone();
+
+        $('#modal').dialog({
+            dialogClass: 'modal',
+            title: 'Your Date',
+
+            buttons: [
+                {
+                    text: 'Save Date',
+                    click: function() {
+                        $(this).dialog('close');
+                    }
+                }
+            ]
+        })
+        $('#modal').append(dateMovie);
+
+        $('#modal').append(dateRecipe);
+                
     })
 });
