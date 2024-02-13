@@ -1,6 +1,7 @@
 const movieKey = "5ddf64d5";
 const recipeKey = "38111c8e91ad4c0ea2c50e3a7327dfc9";
 
+
 $(function(){
     // Define jQuery references for HTML elements
     var $movieResultsList = $('ul.movie.results-list'),
@@ -22,6 +23,7 @@ $(function(){
         })
         .then(function (data) {
             callback(data);
+            console.log(data);
         })
     }
 
@@ -51,11 +53,32 @@ $(function(){
     // Search resolution for form submission with type 'recipe'
     function recipeSearch(formData) {
         // Clear old results
+        $('#recipe-results').empty();
+        var foodQuery = formData[0].value;
+        console.log(foodQuery);
         
         // Define url for api request
-        
+        var apiUrl = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=' + recipeKey + '&query='+ foodQuery + '&number=5';
+
         // Send a GET request to defined url 
-        
+        fetch(apiUrl)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function(data) {
+            for(recipe of data.results){
+                var recipeId = recipe.id;
+                var secondFetchUrl = 'https://api.spoonacular.com/recipes/' + recipeId + '/information?apiKey=' + recipeKey + '&i=';
+
+                fetch(secondFetchUrl)
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    addRecipeCard(data);
+                })
+            }
+        })
     }
 
     // Create a new card representing movie data and add it to the list of search results
@@ -80,10 +103,15 @@ $(function(){
     // Create a new card representing recipe data and add it to the list of search results
     function addRecipeCard(data){
         // Create card to hold the data
-        newCard()
+        newCard().addClass('recipe')
         // Append recipe specific data
+        .append(`<h3>${data.title}`)
+
+        .append(`<img src = '${data.image}'>`)
 
         // Append card to results list
+
+        .appendTo($recipeResultsList);
         
     }
 
