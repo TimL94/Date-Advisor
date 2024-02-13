@@ -5,8 +5,8 @@ const recipeKey = "38111c8e91ad4c0ea2c50e3a7327dfc9";
 $(function(){
     // Define jQuery references for HTML elements
     var $movieResultsList = $('ul.movie.results-list'),
-        $recipeResultsList = $('ul.recipe.results-list'),
         $movieSelectionList = $('ul.movie.selection-list'),
+        $recipeResultsList = $('ul.recipe.results-list'),
         $recipeSelectionList = $('ul.recipe.selection-list');
     
     // Enable Tab functionality
@@ -37,7 +37,7 @@ $(function(){
         // Send a GET request to defined url 
         fetchAPIData(apiURL, (data) => {
             // For each item returned
-            for(item of data.Search){
+            for(var item of data.Search){
                 // Define a url for api request
                 var itemURL = `http://www.omdbapi.com/?apikey=${movieKey}&i=${item.imdbID}`;
                 // Send a GET request to defined url
@@ -64,7 +64,7 @@ $(function(){
             return response.json();
         })
         .then(function(data) {
-            for(recipe of data.results){
+            for(var recipe of data.results){
                 var recipeId = recipe.id;
                 var secondFetchUrl = 'https://api.spoonacular.com/recipes/' + recipeId + '/information?apiKey=' + recipeKey + '&i=';
 
@@ -86,15 +86,31 @@ $(function(){
         .data('id', data.imdbID)
         // Append movie specific data
         // data.Title
-        .append(`<h3 class = 'info title'>${data.Title}</h3>`)
+        .append($('<h3 />', {
+                    class: 'info title',
+                    text: `${data.Title}`
+                }))
         // data.Released
-        .append(`<div class = 'info release'>${data.Released}</div>`)
+        .append($('<div /', {
+                    class : 'info release',
+                    text : `${data.Released}`
+                }))
         // data.Genre
-        .append(`<div class = 'info genre'>${data.Genre}</div>`)
+        .append($('<div /', {
+                    class : 'info genre',
+                    text : `${data.Genre}`
+                }))
         // data.imdbRating
-        .append(`<div class = 'info imdb-rating'>${data.imdbRating}/10.0</div>`)
+        .append($('<div /',
+                {
+                    class : 'info imdb-rating',
+                    text : `${data.imdbRating}/10.0`
+                }))
         // data.Poster
-        .append(`<img class = 'image poster' src = '${data.Poster}'>`)
+        .append($('<img />', {
+                    class : 'image poster',
+                    src : `${data.Poster}`
+                }))
         // Append card to results list
         .appendTo($movieResultsList);
     }
@@ -141,9 +157,6 @@ $(function(){
             // If the delete selection icon is clicked
             if ($target.is( 'a.ui-icon-close')) {
                 deleteItem($item);
-            // If the add to favorites icon is clicked
-            } else if ($target.is('a.ui-icon-star')) {
-                favoriteItem($item);
             }
             return false;
         });
@@ -195,8 +208,6 @@ $(function(){
         $clone.fadeOut(0,() =>{
             // Add a ui icon to delete clone card
             $clone.append(removeIcon)
-            // add a ui icon to favorite clone card
-            //.append(favoriteIcon)
             // add clone to droppable list area
             .appendTo($target)
             // fade clone in
@@ -218,16 +229,18 @@ $(function(){
         //TODO: Handle adding an item to the list of favorites and storing it in local storage
     }
 
-    $('button#generate').on('click', function(event){
-        generateDate();
-    })
+
     // Function to generate a random set of activities and display them as a dialog modal
     function generateDate(){
         var $randomMovie = pickRandomItem($movieSelectionList),
             $randomRecipe = pickRandomItem($recipeSelectionList);
-        // TODO: generate and display a dialog object containing randomly selected items
-        
 
+            dateArray = [];
+
+        dateArray.push($randomMovie);
+        dateArray.push($randomRecipe);
+
+        return dateArray;
     }
     // Selects a random item from a list and returns a reference
     function pickRandomItem($itemList){
@@ -240,7 +253,7 @@ $(function(){
     }
 
     // Attach a listener to the search forms
-    $('form.search-form').on('submit', (event) => {
+    $('form.search-form').on('submit', function(event) {
         // Prevent default submit function
         event.preventDefault();
         // Serialize form data (not too important for now, but will make sense when more information is added to the forms)
@@ -259,11 +272,25 @@ $(function(){
         }
     })
     
+    $('#modal').dialog({
+            autoOpen: false,
+            dialogClass: 'modal',
+            title: 'Your Date',
+        })
     // Attach a listener to the generate date button
-    $('#generate-date').on('click', (event) => {
+    $('#generate').on('click', function(event) {
         // Prevent default function (probably won't neccessary, but added just in case)
         event.preventDefault();
+        $('#modal').empty();
 
-        generateDate();        
+        var newDate = generateDate();
+
+        var dateMovie = newDate[0].clone();
+        var dateRecipe = newDate[1].clone();
+
+        $('#modal').append(dateMovie)
+        .append(dateRecipe)
+        .append(favoriteIcon)
+        .dialog('open');
     })
 });
