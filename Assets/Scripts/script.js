@@ -23,7 +23,6 @@ $(function(){
         })
         .then(function (data) {
             callback(data);
-            console.log(data);
         })
     }
 
@@ -55,7 +54,6 @@ $(function(){
         // Clear old results
         $('#recipe-results').empty();
         var foodQuery = formData[0].value;
-        console.log(foodQuery);
         
         // Define url for api request
         var apiUrl = 'https://api.spoonacular.com/recipes/complexSearch?apiKey=' + recipeKey + '&query='+ foodQuery + '&number=5';
@@ -85,6 +83,7 @@ $(function(){
     function addMovieCard(data){
         // Create card to hold the data
         newCard().addClass('movie')
+        .data('id', data.imdbID)
         // Append movie specific data
         // data.Title
         .append(`<h3 class = 'info title'>${data.Title}</h3>`)
@@ -104,6 +103,9 @@ $(function(){
     function addRecipeCard(data){
         // Create card to hold the data
         newCard().addClass('recipe')
+        .data('id', data.id)
+
+        .data('recipe-url', data.sourceURL)
         // Append recipe specific data
         .append(`<h3>${data.title}`)
 
@@ -194,7 +196,7 @@ $(function(){
             // Add a ui icon to delete clone card
             $clone.append(removeIcon)
             // add a ui icon to favorite clone card
-            .append(favoriteIcon)
+            //.append(favoriteIcon)
             // add clone to droppable list area
             .appendTo($target)
             // fade clone in
@@ -216,10 +218,15 @@ $(function(){
         //TODO: Handle adding an item to the list of favorites and storing it in local storage
     }
 
+    $('button#generate').on('click', function(event){
+        generateDate();
+    })
     // Function to generate a random set of activities and display them as a dialog modal
     function generateDate(){
-
+        var $randomMovie = pickRandomItem($movieSelectionList),
+            $randomRecipe = pickRandomItem($recipeSelectionList);
         // TODO: generate and display a dialog object containing randomly selected items
+        
 
     }
     // Selects a random item from a list and returns a reference
@@ -227,8 +234,9 @@ $(function(){
         var randomItem;
 
         //TODO: pick a random item from the list
+        randomItem = $itemList[0].children[Math.floor(Math.random() * $itemList[0].children.length)];
 
-        return randomItem;
+        return $(randomItem);
     }
 
     // Attach a listener to the search forms
