@@ -5,8 +5,8 @@ const recipeKey = "38111c8e91ad4c0ea2c50e3a7327dfc9";
 $(function(){
     // Define jQuery references for HTML elements
     var $movieResultsList = $('ul.movie.results-list'),
-        $recipeResultsList = $('ul.recipe.results-list'),
         $movieSelectionList = $('ul.movie.selection-list'),
+        $recipeResultsList = $('ul.recipe.results-list'),
         $recipeSelectionList = $('ul.recipe.selection-list');
     
     // Enable Tab functionality
@@ -37,13 +37,13 @@ $(function(){
         // Send a GET request to defined url 
         fetchAPIData(apiURL, (data) => {
             // For each item returned
-            for(item of data.Search){
+            for(var item of data.Search){
                 // Define a url for api request
                 var itemURL = `http://www.omdbapi.com/?apikey=${movieKey}&i=${item.imdbID}`;
                 // Send a GET request to defined url
                 fetchAPIData(itemURL, (data) => {
                     // Create and add a new card to the results list based on recieved data
-                    addMovieCard(data);                    
+                    newMovieCard(data).appendTo($movieResultsList);
                 })
             }
         })
@@ -64,7 +64,7 @@ $(function(){
             return response.json();
         })
         .then(function(data) {
-            for(recipe of data.results){
+            for(var recipe of data.results){
                 var recipeId = recipe.id;
                 var secondFetchUrl = 'https://api.spoonacular.com/recipes/' + recipeId + '/information?apiKey=' + recipeKey + '&i=';
 
@@ -73,36 +73,49 @@ $(function(){
                     return response.json();
                 })
                 .then(function(data) {
-                    addRecipeCard(data);
+                    newRecipeCard(data).appendTo($recipeResultsList);
                 })
             }
         })
     }
 
     // Create a new card representing movie data and add it to the list of search results
-    function addMovieCard(data){
+    function newMovieCard(data){
         // Create card to hold the data
-        newCard().addClass('movie')
+        return newCard().addClass('movie')
         .data('id', data.imdbID)
         // Append movie specific data
         // data.Title
-        .append(`<h3 class = 'info title'>${data.Title}</h3>`)
+        .append($('<h3 />', {
+                    class: 'info title',
+                    text: `${data.Title}`
+                }))
         // data.Released
-        .append(`<div class = 'info release'>${data.Released}</div>`)
+        .append($('<div />', {
+                    class : 'info release',
+                    text : `${data.Released}`
+                }))
         // data.Genre
-        .append(`<div class = 'info genre'>${data.Genre}</div>`)
+        .append($('<div />', {
+                    class : 'info genre',
+                    text : `${data.Genre}`
+                }))
         // data.imdbRating
-        .append(`<div class = 'info imdb-rating'>${data.imdbRating}/10.0</div>`)
+        .append($('<div />', {
+                    class : 'info imdb-rating',
+                    text : `${data.imdbRating}/10.0`
+                }))
         // data.Poster
-        .append(`<img class = 'image poster' src = '${data.Poster}'>`)
-        // Append card to results list
-        .appendTo($movieResultsList);
+        .append($('<img />', {
+                    class : 'image poster',
+                    src : `${data.Poster}`
+                }));
     }
 
     // Create a new card representing recipe data and add it to the list of search results
-    function addRecipeCard(data){
+    function newRecipeCard(data){
         // Create card to hold the data
-        newCard().addClass('recipe')
+        return newCard().addClass('recipe')
         .data('id', data.id)
 
         .data('recipe-url', data.sourceURL)
@@ -110,17 +123,39 @@ $(function(){
         .append(`<h3>${data.title}`)
 
         .append(`<img src = '${data.image}'>`)
-
-        // Append card to results list
-
-        .appendTo($recipeResultsList);
-        
     }
 
+    function newDateCard(data){
+        var $dateCard = newCard();
+
+        // Define URLs to query api's
+        var movieURL = `http://www.omdbapi.com/?apikey=${movieKey}&i=${data.movieID}`;
+        var recipeURL = 'https://api.spoonacular.com/recipes/' + data.recipeID + '/information?apiKey=' + recipeKey + '&i=';
+        
+        // Create a Movie card and append it to new date card
+        // Send a GET request to defined url
+        fetchAPIData(movieURL, (data) => {
+            // Create and add a new card to the results list based on recieved data
+            newMovieCard(data).appendTo($dateCard);                    
+        })
+
+        // Create a Recipe card and append it to new date card
+        fetch(recipeURL)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            newRecipeCard(data).appendTo($dateCard);
+        })
+
+        // Return the new card
+        return $dateCard
+    }
     // Create and return new card all cards should be based on
     function newCard(){
         // Create a new base card
-        var $newCard = $("<li>", {class: `item-card ui-state-default`});
+        var $newCard = $("<li />", {
+                class: `item-card ui-state-default`});
 
         // Define listeners for the card
         // Makes the card a draggable element
@@ -141,9 +176,6 @@ $(function(){
             // If the delete selection icon is clicked
             if ($target.is( 'a.ui-icon-close')) {
                 deleteItem($item);
-            // If the add to favorites icon is clicked
-            } else if ($target.is('a.ui-icon-star')) {
-                favoriteItem($item);
             }
             return false;
         });
@@ -195,8 +227,6 @@ $(function(){
         $clone.fadeOut(0,() =>{
             // Add a ui icon to delete clone card
             $clone.append(removeIcon)
-            // add a ui icon to favorite clone card
-            //.append(favoriteIcon)
             // add clone to droppable list area
             .appendTo($target)
             // fade clone in
@@ -213,9 +243,30 @@ $(function(){
         });
     }
 
+    
+    
+    function loadFavorites(){
+        var favoriteDates = JSON.parse(localStorage.getItem('favoriteDates'));
+        if(!favoriteDates){
+            favoriteDates = [];
+        }
+
+        return favoriteDates;
+    }
+
     // Function to add the information of an item to list of favorites and save a reference for it in local storage
-    function favoriteItem( $item ) {
+    function saveFavoriteDate( $item ) {
         //TODO: Handle adding an item to the list of favorites and storing it in local storage
+        var movieID = $item[0].data('id'),
+            recipeID = $item[1].data('id');
+        
+        console.log(movieID);
+        console.log(recipeID);
+
+        favorites = loadFavorites();
+        favorites.push({movieID, recipeID});
+
+        localStorage.setItem('favoriteDates', JSON.stringify(favorites));
     }
 
 
@@ -224,16 +275,13 @@ $(function(){
         var $randomMovie = pickRandomItem($movieSelectionList),
             $randomRecipe = pickRandomItem($recipeSelectionList);
 
+
             dateArray = [];
 
         dateArray.push($randomMovie);
         dateArray.push($randomRecipe);
 
         return dateArray;
-        
-        
-        
-
     }
     // Selects a random item from a list and returns a reference
     function pickRandomItem($itemList){
@@ -246,7 +294,7 @@ $(function(){
     }
 
     // Attach a listener to the search forms
-    $('form.search-form').on('submit', (event) => {
+    $('form.search-form').on('submit', function(event) {
         // Prevent default submit function
         event.preventDefault();
         // Serialize form data (not too important for now, but will make sense when more information is added to the forms)
@@ -264,34 +312,29 @@ $(function(){
                 console.log("This shouldn't have happened");
         }
     })
-    
-    // Attach a listener to the generate date button
-    $('#generate').on('click', (event) => {
-        // Prevent default function (probably won't neccessary, but added just in case)
-        event.preventDefault();
-        $('#modal').empty();
 
-        var newDate = generateDate();
+    // On load, populate favorited date pairings
+    for(var date of loadFavorites()){
+        $(newDateCard(date)).appendTo('#favorites-list');
+    }
 
-        var dateMovie = newDate[0].clone();
-        var dateRecipe = newDate[1].clone();
-
-        $('#modal').dialog({
+    // Event Listener Section
+    $('#modal')
+        .dialog({
+            autoOpen: false,
             dialogClass: 'modal',
             title: 'Your Date',
-
-            buttons: [
-                {
-                    text: 'Save Date',
-                    click: function() {
-                        $(this).dialog('close');
-                    }
-                }
-            ]
         })
-        $('#modal').append(dateMovie);
+        .on('click', function(event) {
+            if ($(event.target).is( 'a.ui-icon-star')) {
+                var movieID = $(this).find('.item-card.movie'),
+                    recipeID = $(this).find('.item-card.recipe');
 
-        $('#modal').append(dateRecipe);
-                
-    })
+                saveFavoriteDate([movieID,recipeID]);
+            }
+            return false;
+        });
+
+    // Attach a listener to the generate date button
+
 });
