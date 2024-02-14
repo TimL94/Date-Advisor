@@ -115,14 +115,17 @@ $(function(){
     // Create a new card representing recipe data and add it to the list of search results
     function newRecipeCard(data){
         // Create card to hold the data
+        
         return newCard().addClass('recipe')
         .data('id', data.id)
 
-        .data('recipe-url', data.sourceURL)
+        .data('recipe-url', data.sourceUrl)
         // Append recipe specific data
         .append(`<h3>${data.title}`)
 
         .append(`<img src = '${data.image}'>`)
+        .append(`<a href='${data.sourceUrl} class='recipe-url' target="_blank">Recipe Link</a>`);
+        
     }
 
     function newDateCard(data){
@@ -176,8 +179,8 @@ $(function(){
             // If the delete selection icon is clicked
             if ($target.is( 'a.ui-icon-close')) {
                 deleteItem($item);
+                return false;
             }
-            return false;
         });
         return $newCard;
     }
@@ -214,8 +217,7 @@ $(function(){
     });
 
     // Define icon prefabs to add to cards
-    var removeIcon = "<a href='I/dont/know/what/this/should/be' title='remove this selection' class='ui-icon ui-icon-close'>Remove Selecion</a>",
-        favoriteIcon = "<a href='I/dont/know/what/this/should/be' title='favorite this selection' class='ui-icon ui-icon-star'>Favorite Selecion</a>";
+    var removeIcon = "<a href='I/dont/know/what/this/should/be' title='remove this selection' class='ui-icon ui-icon-close'>Remove Selecion</a>";
     
 
     // TODO: Add duplicate detection. Currently, selecting the same card multiple times creates multiple instances of the same item
@@ -259,13 +261,12 @@ $(function(){
         //TODO: Handle adding an item to the list of favorites and storing it in local storage
         var movieID = $item[0].data('id'),
             recipeID = $item[1].data('id');
+            newDate = {movieID, recipeID};
         
-        console.log(movieID);
-        console.log(recipeID);
 
         favorites = loadFavorites();
         favorites.push({movieID, recipeID});
-
+        $(newDateCard(newDate)).appendTo('#favorites-list');
         localStorage.setItem('favoriteDates', JSON.stringify(favorites));
     }
 
@@ -319,22 +320,31 @@ $(function(){
     }
 
     // Event Listener Section
-    $('#modal')
-        .dialog({
-            autoOpen: false,
-            dialogClass: 'modal',
-            title: 'Your Date',
-        })
-        .on('click', function(event) {
-            if ($(event.target).is( 'a.ui-icon-star')) {
-                var movieID = $(this).find('.item-card.movie'),
-                    recipeID = $(this).find('.item-card.recipe');
+    $('#generate').on('click', function(){
+        var currentDate = generateDate();
+        var currentMovie = currentDate[0].clone(true);
+        var currentRecipe = currentDate[1].clone(true);
 
-                saveFavoriteDate([movieID,recipeID]);
-            }
-            return false;
+
+        $('#modal').dialog({
+            title: 'Your Date',
+            height: 800,
+            width: 850,
+
+            buttons: [
+                {
+                    text: 'Save Date',
+                    click: function(){
+                        $(this).dialog('close');
+                        saveFavoriteDate(currentDate);
+                    }
+                }
+            ]
         });
 
+        $('#modal').append(currentMovie);
+        $('#modal').append(currentRecipe);
+    })
     // Attach a listener to the generate date button
 
 });
