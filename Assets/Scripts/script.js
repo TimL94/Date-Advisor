@@ -138,7 +138,7 @@ $(function(){
         var $dateCard = newCard();
 
         // Define URLs to query api's
-        var movieURL = `http://www.omdbapi.com/?apikey=${movieKey}&i=${data.movieID}`;
+        var movieURL = `https://www.omdbapi.com/?apikey=${movieKey}&i=${data.movieID}`;
         var recipeURL = 'https://api.spoonacular.com/recipes/' + data.recipeID + '/information?apiKey=' + recipeKey + '&i=';
         
         // Create a Movie card and append it to new date card
@@ -330,11 +330,12 @@ $(function(){
         var currentDate = generateDate();
         var currentMovie = currentDate[0].clone(true);
         var currentRecipe = currentDate[1].clone(true);
+        $('#modal').empty();
 
 
         $('#modal').dialog({
             title: 'Your Date',
-            height: 800,
+            height: 850,
             width: 850,
 
             buttons: [

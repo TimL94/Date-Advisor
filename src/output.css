@@ -916,3 +916,8 @@ video {
   border-radius: 8px;
   padding: 2rem;
 }
+
+.ui-dialog-titlebar{
+  text-align: center;
+  font-weight: bold;
+}
