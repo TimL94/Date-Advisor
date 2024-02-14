@@ -43,7 +43,7 @@ $(function(){
                 // Send a GET request to defined url
                 fetchAPIData(itemURL, (data) => {
                     // Create and add a new card to the results list based on recieved data
-                    addMovieCard(data);                    
+                    newMovieCard(data).appendTo($movieResultsList);
                 })
             }
         })
@@ -73,16 +73,16 @@ $(function(){
                     return response.json();
                 })
                 .then(function(data) {
-                    addRecipeCard(data);
+                    newRecipeCard(data).appendTo($recipeResultsList);
                 })
             }
         })
     }
 
     // Create a new card representing movie data and add it to the list of search results
-    function addMovieCard(data){
+    function newMovieCard(data){
         // Create card to hold the data
-        newCard().addClass('movie')
+        return newCard().addClass('movie')
         .data('id', data.imdbID)
         // Append movie specific data
         // data.Title
@@ -91,18 +91,17 @@ $(function(){
                     text: `${data.Title}`
                 }))
         // data.Released
-        .append($('<div /', {
+        .append($('<div />', {
                     class : 'info release',
                     text : `${data.Released}`
                 }))
         // data.Genre
-        .append($('<div /', {
+        .append($('<div />', {
                     class : 'info genre',
                     text : `${data.Genre}`
                 }))
         // data.imdbRating
-        .append($('<div /',
-                {
+        .append($('<div />', {
                     class : 'info imdb-rating',
                     text : `${data.imdbRating}/10.0`
                 }))
@@ -110,15 +109,13 @@ $(function(){
         .append($('<img />', {
                     class : 'image poster',
                     src : `${data.Poster}`
-                }))
-        // Append card to results list
-        .appendTo($movieResultsList);
+                }));
     }
 
     // Create a new card representing recipe data and add it to the list of search results
-    function addRecipeCard(data){
+    function newRecipeCard(data){
         // Create card to hold the data
-        newCard().addClass('recipe')
+        return newCard().addClass('recipe')
         .data('id', data.id)
 
         .data('recipe-url', data.sourceURL)
@@ -130,13 +127,39 @@ $(function(){
         // Append card to results list
 
         .appendTo($recipeResultsList);
-        
     }
 
+    function newDateCard(data){
+        var $dateCard = newCard();
+
+        // Define URLs to query api's
+        var movieURL = `http://www.omdbapi.com/?apikey=${movieKey}&i=${data.movieID}`;
+        var recipeURL = 'https://api.spoonacular.com/recipes/' + data.recipeID + '/information?apiKey=' + recipeKey + '&i=';
+        
+        // Create a Movie card and append it to new date card
+        // Send a GET request to defined url
+        fetchAPIData(movieURL, (data) => {
+            // Create and add a new card to the results list based on recieved data
+            newMovieCard(data).appendTo($dateCard);                    
+        })
+
+        // Create a Recipe card and append it to new date card
+        fetch(recipeURL)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            newRecipeCard(data).appendTo($dateCard);
+        })
+
+        // Return the new card
+        return $dateCard
+    }
     // Create and return new card all cards should be based on
     function newCard(){
         // Create a new base card
-        var $newCard = $("<li>", {class: `item-card ui-state-default`});
+        var $newCard = $("<li />", {
+                class: `item-card ui-state-default`});
 
         // Define listeners for the card
         // Makes the card a draggable element
@@ -224,9 +247,30 @@ $(function(){
         });
     }
 
+    
+    
+    function loadFavorites(){
+        var favoriteDates = JSON.parse(localStorage.getItem('favoriteDates'));
+        if(!favoriteDates){
+            favoriteDates = [];
+        }
+
+        return favoriteDates;
+    }
+
     // Function to add the information of an item to list of favorites and save a reference for it in local storage
-    function favoriteItem( $item ) {
+    function saveFavoriteDate( $item ) {
         //TODO: Handle adding an item to the list of favorites and storing it in local storage
+        var movieID = $item[0].data('id'),
+            recipeID = $item[1].data('id');
+        
+        console.log(movieID);
+        console.log(recipeID);
+
+        favorites = loadFavorites();
+        favorites.push({movieID, recipeID});
+
+        localStorage.setItem('favoriteDates', JSON.stringify(favorites));
     }
 
 
@@ -271,22 +315,38 @@ $(function(){
                 console.log("This shouldn't have happened");
         }
     })
-    
-    $('#modal').dialog({
+
+    // On load, populate favorited date pairings
+    for(var date of loadFavorites()){
+        $(newDateCard(date)).appendTo('#favorites-list');
+    }
+
+    // Event Listener Section
+    $('#modal')
+        .dialog({
             autoOpen: false,
             dialogClass: 'modal',
             title: 'Your Date',
         })
+        .on('click', function(event) {
+            if ($(event.target).is( 'a.ui-icon-star')) {
+                var movieID = $(this).find('.item-card.movie'),
+                    recipeID = $(this).find('.item-card.recipe');
+
+                saveFavoriteDate([movieID,recipeID]);
+            }
+            return false;
+        });
+
     // Attach a listener to the generate date button
     $('#generate').on('click', function(event) {
         // Prevent default function (probably won't neccessary, but added just in case)
         event.preventDefault();
-        $('#modal').empty();
-
+        //$('#modal').empty();
         var newDate = generateDate();
 
-        var dateMovie = newDate[0].clone();
-        var dateRecipe = newDate[1].clone();
+        var dateMovie = newDate[0].clone(true);
+        var dateRecipe = newDate[1].clone(true);
 
         $('#modal').append(dateMovie)
         .append(dateRecipe)

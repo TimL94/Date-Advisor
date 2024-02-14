@@ -46,7 +46,11 @@
                 <ul id="recipe-results" class="recipe results-list sortable" data-search-type="recipe"></ul>
             </div>
         </section>
-        <div><button id="generate">generate date</button></div>
+        <div>
+            <button id="generate">generate date</button>
+            <div id="modal"></div>
+        </div>
+        
         <section id="selection-container" class="tabs text-3xl bg-red-500 m-7 p-4 rounded-lg border-4 border-black shadow-2xl">
             <!-- Tab links-->
             <ul>
@@ -64,9 +68,7 @@
             <!-- Favorite selections panel body -->
             <div id="favorites-tab" class="panel">
                 <!-- list for displaying favorite -->
-                <ul class="movie favorites card-list"></ul>
-                <ul class="recipe favorites card-list"></ul>
-                
+                <ul id="favorites-list" class="date card-list"></ul>
             </div>
         </section>
 
