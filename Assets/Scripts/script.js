@@ -123,10 +123,6 @@ $(function(){
         .append(`<h3>${data.title}`)
 
         .append(`<img src = '${data.image}'>`)
-
-        // Append card to results list
-
-        .appendTo($recipeResultsList);
     }
 
     function newDateCard(data){
