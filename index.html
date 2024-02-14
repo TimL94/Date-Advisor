@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="./src/output.css">
 </head>
 
-<body class= "font-mono bg-indigo-600" >
+<body class= "font-mono bg-indigo-600">
     <header 
     class="text-8xl text-white italic text-center bg-no-repeat bg-cover bg-bottom w-full h-full p-16" 
     style= "background-image: url(./Assets/images/Artwork.jpg);"> DATE ADVISOR
     </header>
     
-    <main class= "w-full h-full inline-flex justify-between"> 
+    <main class= "w-full h-full pl-4 inline-flex justify-between p"> 
         <section id="search-container" class="tabs text-3xl bg-red-500 m-7 p-4 rounded-lg border-4 border-black shadow-2xl">
             <!-- Tab links-->
             <ul>
@@ -37,7 +37,7 @@
             <!-- Recipe search panel body -->
             <div id="recipe-search-tab" class="panel">
                 <!-- Recipe search form --> 
-                <form id="search-recipe" class="search-form text-black" data-search-type="recipe">
+                <form id="search-recipe" class="search-form" data-search-type="recipe">
                     <label for="search-input">Search for recipes:</label>
                     <input type="text" name="search-input" id="search-input" placeholder="Recipes" autocomplete="on" required>
                     <button id="search-button" type="submit">Search</button>
@@ -46,8 +46,11 @@
                 <ul id="recipe-results" class="recipe results-list sortable" data-search-type="recipe"></ul>
             </div>
         </section>
-        <div><button id="generate">generate date</button>
-        <div id="modal"></div></div>
+
+        <div class="flex">
+            <button class="text-3xl rounded-lg border-4 text-white border-white " id="generate">Generate Date</button>
+        <div id="modal" class="inline-flex"></div></div>
+
         <section id="selection-container" class="tabs text-3xl bg-red-500 m-7 p-4 rounded-lg border-4 border-black shadow-2xl">
             <!-- Tab links-->
             <ul>
@@ -58,8 +61,8 @@
             <!-- Selections panel body -->
             <div id="selections-tab" class="panel">
                 <!-- list for displaying selections -->
-                <ul class="movie selection-list card-list" data-search-type="movie" style="min-height: 400px;">movie</ul>
-                <ul class="recipe selection-list card-list" data-search-type="recipe" style="min-height: 400px;">recipe</ul>
+                <ul class="movie selection-list card-list" data-search-type="movie" style="min-height: 400px;">Movie List</ul>
+                <ul class="recipe selection-list card-list" data-search-type="recipe" style="min-height: 400px;">Recipe List</ul>
             </div>
             
             <!-- Favorite selections panel body -->
