@@ -275,6 +275,7 @@ $(function(){
         var $randomMovie = pickRandomItem($movieSelectionList),
             $randomRecipe = pickRandomItem($recipeSelectionList);
 
+
             dateArray = [];
 
         dateArray.push($randomMovie);
@@ -335,18 +336,5 @@ $(function(){
         });
 
     // Attach a listener to the generate date button
-    $('#generate').on('click', function(event) {
-        // Prevent default function (probably won't neccessary, but added just in case)
-        event.preventDefault();
-        //$('#modal').empty();
-        var newDate = generateDate();
 
-        var dateMovie = newDate[0].clone(true);
-        var dateRecipe = newDate[1].clone(true);
-
-        $('#modal').append(dateMovie)
-        .append(dateRecipe)
-        .append(favoriteIcon)
-        .dialog('open');
-    })
 });
