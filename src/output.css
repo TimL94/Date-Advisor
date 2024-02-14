@@ -869,3 +869,50 @@ video {
 .modal .ui-dialog-titlebar {
   text-align: center;
 }
+
+.modal-container{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.modal-container-2 {
+  display: flex;
+  flex-direction: column;
+  height: 80%;
+  width: 45%;
+}
+
+.item-card {
+  display: flex;
+  align-items: center;
+  width: 400px;
+  height: 650px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.recipe {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 5px;
+}
+
+.movie{
+  display: flex;
+  flex-direction: column;
+  margin: 5px;
+}
+
+.custom-list {
+  align-items: center;
+
+}
+
+.search-form {
+  border: 3px solid black;
+  border-radius: 8px;
+  padding: 2rem;
+}
