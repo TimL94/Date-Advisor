@@ -38,14 +38,14 @@ $(function(){
         $movieResultsList.empty();
         // Define url for api request
         var search = formData[0].value;
-        var apiURL = `http://www.omdbapi.com/?apikey=${movieKey}&s=${search}`;
+        var apiURL = `https://www.omdbapi.com/?apikey=${movieKey}&s=${search}`;
         
         // Send a GET request to defined url 
         fetchAPIData(apiURL, (data) => {
             // For each item returned
             for(var item of data.Search){
                 // Define a url for api request
-                var itemURL = `http://www.omdbapi.com/?apikey=${movieKey}&i=${item.imdbID}`;
+                var itemURL = `https://www.omdbapi.com/?apikey=${movieKey}&i=${item.imdbID}`;
                 // Send a GET request to defined url
                 fetchAPIData(itemURL, (data) => {
                     // Create and add a new card to the results list based on recieved data
